@@ -35,11 +35,6 @@ source thisroot.sh # uses the `thisroot.sh` in PATH
 set -x
 set -e
 
-# FIXME this is a ugly workaround, the problem is that roottest builds googletest as an external project,
-# and the cmake configuration of the external project does not pick up `ar` from $AR or $GCC_AR
-# Should be fixed by 
-ln -s "${AR}" /usr/bin/ar
-
 BUILD_DIR="${JOB_DIR}/roottest_build"
 mkdir -p "${BUILD_DIR}"
 pushd "${BUILD_DIR}"
