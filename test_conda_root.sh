@@ -35,7 +35,7 @@ cmake "${JOB_DIR}/roottest"
 cmake -DCMAKE_AR="${AR}" --build .
 
 #--- run tests ---#
-ctest
+ctest --output-on-failure
 
 popd
 popd
