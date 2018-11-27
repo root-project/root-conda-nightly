@@ -39,7 +39,7 @@ BUILD_DIR="${JOB_DIR}/roottest_build"
 mkdir -p "${BUILD_DIR}"
 pushd "${BUILD_DIR}"
 cmake "${JOB_DIR}/roottest"
-cmake --build .
+cmake -DCMAKE_AR="${AR}" --build .
 
 #--- run tests ---#
 ctest
