@@ -20,13 +20,7 @@ git clone https://github.com/root-project/roottest
 #--- build roottest ---#
 source "${CONDA_PREFIX}/etc/profile.d/conda.sh" # to get `conda activate`
 conda activate # set CXX, CC env variables to the right values (note that gcc won't be in PATH)
-
-#FIXME this +x/-x sandwich works around a bug in thisroot.sh which assume at least one among `man` and `manpath` exists
-set +x
-set +e
 source thisroot.sh # uses the `thisroot.sh` in PATH
-set -x
-set -e
 
 BUILD_DIR="${JOB_DIR}/roottest_build"
 mkdir -p "${BUILD_DIR}"
