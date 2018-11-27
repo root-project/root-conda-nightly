@@ -16,13 +16,6 @@ conda install --yes -q -c conda-forge/label/gcc7 -c "${ROOT_CHANNEL}" root cmake
 
 #--- get roottest, patch it to allow building against an already installed ROOT ---#
 git clone https://github.com/root-project/roottest
-pushd "${JOB_DIR}/roottest"
-# `git pull` requires some credentials
-git config --global user.email "dummyuser@foo.com"
-git config --global user.name "Dummy User"
-git checkout -b fix_build_against_installed master
-git pull --no-commit https://github.com/vgvassilev/roottest.git Fix-ROOT-9405
-popd
 
 #--- build roottest ---#
 source "${CONDA_PREFIX}/etc/profile.d/conda.sh" # to get `conda activate`
