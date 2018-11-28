@@ -3,7 +3,7 @@ set -x
 set -e
 
 #--- configuration vars ---#
-ROOT_CHANNEL="chrisburr/label/gitlab-root-master-593544"
+ROOT_CHANNEL="chrisburr/label/gitlab-root-master-607763"
 JOB_DIR="/root/job"
 
 #--- setup environment ---#
