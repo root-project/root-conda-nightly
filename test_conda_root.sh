@@ -24,6 +24,10 @@ conda activate # set CXX, CC env variables to the right values (note that gcc wo
 source thisroot.sh # uses the `thisroot.sh` in PATH
 set -x
 
+echo "***** ENVIRONMENT VARIABLES WHEN BUILDING ROOTTEST *****"
+declare -p
+echo "********************************************************"
+
 BUILD_DIR="${JOB_DIR}/roottest_build"
 mkdir -p "${BUILD_DIR}"
 pushd "${BUILD_DIR}"
