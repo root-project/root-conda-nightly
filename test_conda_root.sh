@@ -11,6 +11,7 @@ mkdir -p "${JOB_DIR}"
 pushd "${JOB_DIR}"
 
 #--- install ROOT from conda ---#
+# TODO avoid installing blas explicitly when ROOT's conda package lists it as a dependency
 conda update --yes --all
 conda install --yes -q -c conda-forge/label/gcc7 -c "${ROOT_CHANNEL}" root cmake make blas
 
