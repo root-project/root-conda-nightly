@@ -12,7 +12,7 @@ pushd "${JOB_DIR}"
 
 #--- install ROOT from conda ---#
 conda update --yes --all
-conda install --yes -q -c conda-forge/label/gcc7 -c "${ROOT_CHANNEL}" root cmake make
+conda install --yes -q -c conda-forge/label/gcc7 -c "${ROOT_CHANNEL}" root cmake make blas
 
 #--- get roottest, patch it to allow building against an already installed ROOT ---#
 git clone https://github.com/bluehood/roottest
