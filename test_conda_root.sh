@@ -32,6 +32,9 @@ echo "***** ENVIRONMENT VARIABLES WHEN BUILDING ROOTTEST *****"
 declare -p
 echo "********************************************************"
 
+# TODO figure out why tests (e.g. roottest-cling-stl-dicts-build) fail if AR is not in path
+ln -s "${AR}" /usr/bin/ar
+
 BUILD_DIR="${JOB_DIR}/roottest_build"
 mkdir -p "${BUILD_DIR}"
 pushd "${BUILD_DIR}"
