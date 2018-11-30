@@ -15,7 +15,10 @@ conda update --yes --all
 conda install --yes -q -c conda-forge/label/gcc7 -c "${ROOT_CHANNEL}" root cmake make
 
 #--- get roottest, patch it to allow building against an already installed ROOT ---#
-git clone https://github.com/root-project/roottest
+git clone https://github.com/bluehood/roottest
+pushd roottest
+git checkout dev
+popd
 
 #--- build roottest ---#
 set +x
