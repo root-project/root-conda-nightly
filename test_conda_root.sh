@@ -15,7 +15,8 @@ pushd "${JOB_DIR}"
 conda update --yes --all
 conda install --yes -q -c conda-forge/label/gcc7 -c "${ROOT_CHANNEL}" root cmake make blas
 
-#--- get roottest, patch it to allow building against an already installed ROOT ---#
+#--- get roottest ---#
+# TODO go back to using ROOT's roottest master as soon as the issue solved by PR #262 is fixed
 git clone https://github.com/bluehood/roottest
 pushd roottest
 git checkout dev
