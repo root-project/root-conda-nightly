@@ -23,6 +23,8 @@ git checkout dev
 popd
 
 #--- build roottest ---#
+conda activate # set AR, CXX, CC env variables to the right values (note that gcc won't be in PATH)
+
 echo "***** ENVIRONMENT VARIABLES WHEN BUILDING ROOTTEST *****"
 declare -p
 echo "********************************************************"
