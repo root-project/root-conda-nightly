@@ -23,12 +23,6 @@ git checkout dev
 popd
 
 #--- build roottest ---#
-set +x
-source "${CONDA_PREFIX}/etc/profile.d/conda.sh" # to get `conda activate`
-conda activate # set CXX, CC env variables to the right values (note that gcc won't be in PATH)
-source thisroot.sh # uses the `thisroot.sh` in PATH
-set -x
-
 echo "***** ENVIRONMENT VARIABLES WHEN BUILDING ROOTTEST *****"
 declare -p
 echo "********************************************************"
