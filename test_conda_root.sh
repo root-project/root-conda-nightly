@@ -16,7 +16,7 @@ conda update --yes --all
 conda install --yes --quiet -c "${ROOT_CHANNEL}" root cmake make
 
 #--- get roottest ---#
-git clone https://github.com/root-project/roottest
+git clone --branch v6-16-00-patches --depth 1 https://github.com/root-project/roottest
 
 #--- build roottest ---#
 set +x
