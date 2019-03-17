@@ -1,6 +1,7 @@
 #!/bin/bash
+set -euo pipefail
+IFS=$'\n\t'
 set -x
-set -e
 
 #--- configuration vars ---#
 ROOT_CHANNEL="conda-forge"
