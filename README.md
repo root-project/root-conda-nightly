@@ -25,3 +25,8 @@ docker stop "${CONTAINER}"
 docker cp "${CONTAINER}:/root/job/roottest_build/Testing" ctest_output
 docker rm "${CONTAINER}"
 ```
+
+#### build\_from\_recipe.sh
+
+- clone root-feedstock recipe
+- conda-build it
