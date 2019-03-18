@@ -38,7 +38,7 @@ cmake -DCMAKE_AR="${AR}" "${JOB_DIR}/roottest"
 cmake --build .
 
 #--- run tests ---#
-ctest --output-on-failure
+ctest -T test --no-compress-output
 
 popd
 popd
