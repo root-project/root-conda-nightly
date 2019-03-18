@@ -22,8 +22,9 @@ git clone --branch v6-16-00-patches --depth 1 https://github.com/root-project/ro
 #--- build roottest ---#
 set +x
 source "${CONDA_PREFIX}/etc/profile.d/conda.sh" # to get `conda activate`
-set -x
+set +u
 conda activate # set AR, CXX, CC env variables to the right values (note that gcc won't be in PATH)
+set -xu
 
 echo "***** ENVIRONMENT VARIABLES WHEN BUILDING ROOTTEST *****"
 declare -p
