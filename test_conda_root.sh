@@ -4,6 +4,7 @@ IFS=$'\n\t'
 set -x
 
 #--- configuration vars ---#
+CONDA_PREFIX="/opt/conda"
 ROOT_CHANNEL="conda-forge"
 JOB_DIR="/root/job"
 
