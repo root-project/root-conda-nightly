@@ -12,8 +12,8 @@ mkdir -p "${JOB_DIR}"
 pushd "${JOB_DIR}"
 
 #--- install ROOT from conda ---#
-apt-get install --yes binutils # to have `ar` in PATH
-conda update --yes --all
+apt-get install --yes --quiet binutils # to have `ar` in PATH
+conda update --yes --all --quiet
 conda install --yes --quiet -c "${ROOT_CHANNEL}" root cmake make
 
 #--- get roottest ---#
