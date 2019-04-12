@@ -1,12 +1,27 @@
-### Test conda ROOT
+## Test conda ROOT
 
 [![Build Status](https://epsft-jenkins.cern.ch/buildStatus/icon?job=root-conda-roottest)](https://epsft-jenkins.cern.ch/job/root-conda-roottest)
 
-The repository contains a script that:
+#### test\_conda\_root.sh
 
-- installs [ROOT](github.com/root-project/root) via conda (currently downloading [this package](https://anaconda.org/chrisburr/root))
-- downloads and compiles [roottest](http://github.com/root-project/roottest)
-- runs all available tests via `ctest`
+- install [ROOT](github.com/root-project/root) via conda+conda-forge
+- download and compile [roottest](http://github.com/root-project/roottest) against that pre-existing ROOT installation
+- run all available tests via `ctest`
 
-At least for now, the script is only guaranteed to work when run inside the
-continuumio/miniconda3 docker container with ROOT master, roottest master.
+The corresponding ROOT jenkins job is [here](https://epsft-jenkins.cern.ch/view/ROOT/job/root-conda-roottest).
+At the time of writing, the jenkins job configuration is simply:
+
+```
+#!/bin/bash
+set -x
+
+git clone --depth 1 https://gitlab.cern.ch/eguiraud/test_conda_root.git
+
+CONTAINER=root-conda-test-$(date +%s)
+docker run --name ${CONTAINER} -t --detach continuumio/miniconda
+docker cp test_conda_root/test_conda_root.sh "${CONTAINER}:/root/."
+docker exec "${CONTAINER}" /bin/bash /root/test_conda_root.sh
+docker stop "${CONTAINER}"
+docker cp "${CONTAINER}:/root/job/roottest_build/Testing" ctest_output
+docker rm "${CONTAINER}"
+```
