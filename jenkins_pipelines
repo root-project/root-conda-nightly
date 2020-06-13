@@ -11,12 +11,11 @@ node ('lcg_docker_cc7') {
         }
         stage('Publish test results') {
             // TODO: parameterize roottest build directory
-            sh 'docker cp testconda:/root/job/roottest_build/Testing ctest_output'
-            junit 'ctest_output/*/Test.xml'
+            sh 'rm -rf ctest_output && docker cp testconda:/root/job/roottest_build/Testing ctest_output'
+            xunit([CTest(deleteOutputFiles: true, failIfNotNew: true, pattern: 'ctest_output/*/*.xml', skipNoTestFiles: false, stopProcessingIfError: true)])
         }
     }} finally {
         stage('Clean up') {
-            // TODO: there is probably a better way
             sh 'docker rm -f testconda'
             sh 'rm -rf test_conda_root'
         }
