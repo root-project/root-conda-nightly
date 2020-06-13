@@ -1,0 +1,24 @@
+node ('lcg_docker_cc7') {
+    try {
+    timestamps {
+        stage('Create docker container') {
+            sh 'docker run -t --detach -e ROOTTEST_BRANCH=v6-20-06 --name testconda condaforge/linux-anvil-comp7'
+        }
+        stage('Test conda release') {
+            sh 'git clone https://gitlab.cern.ch/eguiraud/test_conda_root.git'
+            sh 'docker cp test_conda_root/test_conda_root.sh testconda:.'
+            sh 'docker exec -t testconda bash -i test_conda_root.sh'
+        }
+        stage('Publish test results') {
+            // TODO: parameterize roottest build directory
+            sh 'docker cp testconda:/root/job/roottest_build/Testing ctest_output'
+            junit 'ctest_output/*/Test.xml'
+        }
+    }} finally {
+        stage('Clean up') {
+            // TODO: there is probably a better way
+            sh 'docker rm -f testconda'
+            sh 'rm -rf test_conda_root'
+        }
+    }
+}
