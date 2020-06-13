@@ -42,8 +42,7 @@ cmake -Ddataframe=ON "${JOB_DIR}/roottest"
 cmake --build .
 
 #--- run tests ---#
-#ctest -T test --no-compress-output
-ctest -R "roottest-root-dataframe" -T test --no-compress-output
+ctest -T test --no-compress-output
 
 popd
 popd
