@@ -3,29 +3,32 @@ set -euo pipefail
 IFS=$'\n\t'
 set -x
 
-#--- configuration vars ---#
-CONDA_PREFIX="/opt/conda"
-ROOT_CHANNEL="conda-forge"
 JOB_DIR="/root/job"
 
 #--- setup environment ---#
+if [[ -z "${ROOTTEST_BRANCH}" ]]; then
+   echo "Please set the ROOTTEST_BRANCH env variable to the desired git branch for the roottest repository." >&2
+   exit 1
+fi
 mkdir -p "${JOB_DIR}"
 pushd "${JOB_DIR}"
 
 #--- install ROOT from conda ---#
-apt-get install --yes --quiet binutils # to have `ar` in PATH
+set +x
+echo -n "activating conda..."
+conda activate
+echo "done"
+set -x
 conda update --yes --all --quiet
-conda install --yes --quiet -c "${ROOT_CHANNEL}" root cmake make
+conda install --yes --quiet -c conda-forge root cmake make
 
 #--- get roottest ---#
-git clone --branch v6-16-00-patches --depth 1 https://github.com/root-project/roottest
-
-#--- build roottest ---#
-set +x
-source "${CONDA_PREFIX}/etc/profile.d/conda.sh" # to get `conda activate`
-set +u
-conda activate # set AR, CXX, CC env variables to the right values (note that gcc won't be in PATH)
-set -xu
+ROOT_VERSION=$(root-config --version | sed 's:[\./]:-:g')
+if [[ -z "$ROOT_VERSION" || "$ROOT_VERSION" != "$ROOTTEST_BRANCH" ]]; then
+   echo "ROOT_VERSION $ROOT_VERSION for conda-forge ROOT package does not match specified ROOTTEST_BRANCH $ROOTTEST_BRANCH." >&2
+   exit 2
+fi
+git clone --branch ${ROOTTEST_BRANCH} --depth 1 https://github.com/root-project/roottest
 
 echo "***** ENVIRONMENT VARIABLES WHEN BUILDING ROOTTEST *****"
 declare -p
@@ -34,7 +37,7 @@ echo "********************************************************"
 BUILD_DIR="${JOB_DIR}/roottest_build"
 mkdir -p "${BUILD_DIR}"
 pushd "${BUILD_DIR}"
-cmake -DCMAKE_AR="${AR}" "${JOB_DIR}/roottest"
+cmake "${JOB_DIR}/roottest"
 cmake --build .
 
 #--- run tests ---#
