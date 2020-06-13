@@ -14,16 +14,16 @@ mkdir -p "${JOB_DIR}"
 pushd "${JOB_DIR}"
 
 #--- install ROOT from conda ---#
-set +x
+set +ux
 echo -n "activating conda..."
 conda activate
 echo "done"
-set -x
 conda update --yes --all --quiet
 conda install --yes --quiet -c conda-forge root cmake make
+set -ux
 
 #--- get roottest ---#
-ROOT_VERSION=$(root-config --version | sed 's:[\./]:-:g')
+ROOT_VERSION="v$(root-config --version | sed 's:[\./]:-:g')"
 if [[ -z "$ROOT_VERSION" || "$ROOT_VERSION" != "$ROOTTEST_BRANCH" ]]; then
    echo "ROOT_VERSION $ROOT_VERSION for conda-forge ROOT package does not match specified ROOTTEST_BRANCH $ROOTTEST_BRANCH." >&2
    exit 2
