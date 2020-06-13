@@ -28,7 +28,7 @@ if [[ -z "$ROOT_VERSION" || "$ROOT_VERSION" != "$ROOTTEST_BRANCH" ]]; then
    echo "ROOT_VERSION $ROOT_VERSION for conda-forge ROOT package does not match specified ROOTTEST_BRANCH $ROOTTEST_BRANCH." >&2
    exit 2
 fi
-git clone --branch ${ROOTTEST_BRANCH} --depth 1 https://github.com/root-project/roottest
+git clone --quiet --branch ${ROOTTEST_BRANCH} --depth 1 https://github.com/root-project/roottest
 
 echo "***** ENVIRONMENT VARIABLES WHEN BUILDING ROOTTEST *****"
 declare -p
