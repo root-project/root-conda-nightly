@@ -1,6 +1,6 @@
 node ('lcg_docker_cc7') {
-    try {
     timestamps {
+    try {
         stage('Create docker container') {
             sh 'docker run -t --detach -e ROOTTEST_BRANCH=v6-20-06 --name testconda condaforge/linux-anvil-comp7'
         }
@@ -9,15 +9,21 @@ node ('lcg_docker_cc7') {
             sh 'docker cp test_conda_root/test_conda_root.sh testconda:.'
             sh 'docker exec -t testconda bash -i test_conda_root.sh'
         }
+    } catch (err) {
+        echo "Failure detected, trying to recover test results and perform clean-up anyway"
+    }
+    try {
         stage('Publish test results') {
             // TODO: parameterize roottest build directory
             sh 'rm -rf ctest_output && docker cp testconda:/root/job/roottest_build/Testing ctest_output'
             xunit([CTest(deleteOutputFiles: true, failIfNotNew: true, pattern: 'ctest_output/*/*.xml', skipNoTestFiles: false, stopProcessingIfError: true)])
         }
-    }} finally {
-        stage('Clean up') {
+    } catch (err) {
+        echo "Failed to recover test results"
+    }
+    stage('Clean up') {
             sh 'docker rm -f testconda'
             sh 'rm -rf test_conda_root'
-        }
+    }
     }
 }
