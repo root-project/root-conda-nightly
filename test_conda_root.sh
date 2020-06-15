@@ -37,7 +37,7 @@ echo "********************************************************"
 BUILD_DIR="${JOB_DIR}/roottest_build"
 mkdir -p "${BUILD_DIR}"
 pushd "${BUILD_DIR}"
-# FIXME RDF tests are not built when roottest is built independently of ROOT because 'dataframe' is not set
+# no need for -Ddataframe=ON since v6.24, see https://github.com/root-project/roottest/pull/551
 cmake -Ddataframe=ON "${JOB_DIR}/roottest"
 cmake --build .
 
