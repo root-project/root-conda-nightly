@@ -16,7 +16,7 @@ node ('lcg_docker_cc7') {
         stage('Publish test results') {
             // TODO: parameterize roottest build directory
             sh 'rm -rf ctest_output && docker cp testconda:/root/job/roottest_build/Testing ctest_output'
-            xunit([CTest(deleteOutputFiles: true, failIfNotNew: true, pattern: 'ctest_output/*/*.xml', skipNoTestFiles: false, stopProcessingIfError: true)])
+            xunit thresholds: [failed(failureNewThreshold: '0', failureThreshold: '8', unstableNewThreshold: '0', unstableThreshold: '8')], tools: [CTest(deleteOutputFiles: true, failIfNotNew: true, pattern: 'ctest_output/*/*.xml', skipNoTestFiles: false, stopProcessingIfError: true)]
         }
     } catch (err) {
         echo "Failed to recover test results"
