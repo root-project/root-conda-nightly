@@ -8,7 +8,7 @@ echo -n "activating conda..."
 conda activate
 echo "done"
 conda update --yes --all --quiet
-conda install --yes --quiet -c conda-build git
+conda install --yes --quiet conda-build git
 set -ux
 
 export ROOT_CONDA_BUILD_NUMBER="$(date +%Y%M%d)"
