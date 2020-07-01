@@ -1,4 +1,4 @@
-## Test conda ROOT
+## ROOT conda CI scripts
 
 ### test\_conda\_root.sh
 
@@ -17,3 +17,7 @@ $ docker run -t --detach -e ROOTTEST_BRANCH=v6-20-06 --name testconda condaforge
 $ docker cp test_conda_root.sh testconda:.
 $ docker exec -it testconda bash -i test_conda_root.sh
 ```
+
+### build_master.sh
+
+This script builds ROOT master as a conda package, thanks to Chris Burr.
