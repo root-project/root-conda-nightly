@@ -1,0 +1,29 @@
+pipeline {
+    agent {
+        label 'lcg_docker_cc7'
+    }
+
+    // timestamps { // broken with declarative pipelines??
+        stages {
+        stage('Create docker container') {
+            steps {
+            sh 'docker run -t --detach --name conda-nightlies condaforge/linux-anvil-comp7'
+            }
+        }
+        stage('Run ') {
+            steps {
+            sh 'git clone --quiet --depth 1 https://gitlab.cern.ch/eguiraud/conda_root.git'
+            sh 'docker cp conda_root/build_master.sh conda-nightlies:.'
+            sh 'docker exec -t conda-nightlies bash -i build_master.sh'
+            }
+        }
+        }
+    //}
+    post { 
+        always { 
+            echo 'Cleaning up!'
+            sh 'docker rm -f conda-nightlies'
+            sh 'rm -rf conda_root'
+        }
+    }
+}
