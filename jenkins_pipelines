@@ -1,29 +1,34 @@
-node ('lcg_docker_cc7') {
-    timestamps {
-    try {
+pipeline {
+    agent {
+        label 'lcg_docker_cc7'
+    }
+    // timestamps { // for some reason timestamps do not work in declarative pipelines
+    stages {
         stage('Create docker container') {
-            sh 'docker run -t --detach -e ROOTTEST_BRANCH=v6-20-06 --name testconda condaforge/linux-anvil-comp7'
+            steps {
+                sh 'docker run -t --detach -e ROOTTEST_BRANCH=v6-22-00 --name testconda condaforge/linux-anvil-comp7'
+            }
         }
         stage('Test conda release') {
-            sh 'git clone --quiet --depth 1 https://gitlab.cern.ch/eguiraud/test_conda_root.git'
-            sh 'docker cp test_conda_root/test_conda_root.sh testconda:.'
-            sh 'docker exec -t testconda bash -i test_conda_root.sh'
+            steps {
+                sh 'git clone --quiet --depth 1 https://gitlab.cern.ch/eguiraud/conda_root.git'
+                sh 'docker cp conda_root/test_conda_root.sh testconda:.'
+                sh 'docker exec -t testconda bash -i test_conda_root.sh'
+            }
         }
-    } catch (err) {
-        echo "Failure detected, trying to recover test results and perform clean-up anyway"
-    }
-    try {
         stage('Publish test results') {
-            // TODO: parameterize roottest build directory
-            sh 'rm -rf ctest_output && docker cp testconda:/root/job/roottest_build/Testing ctest_output'
-            xunit thresholds: [failed(failureNewThreshold: '0', failureThreshold: '8', unstableNewThreshold: '0', unstableThreshold: '8')], tools: [CTest(deleteOutputFiles: true, failIfNotNew: true, pattern: 'ctest_output/*/*.xml', skipNoTestFiles: false, stopProcessingIfError: true)]
+            steps {
+                sh 'rm -rf ctest_output && docker cp testconda:/root/job/roottest_build/Testing ctest_output'
+                xunit thresholds: [failed(failureNewThreshold: '0', failureThreshold: '8', unstableNewThreshold: '0', unstableThreshold: '0')], tools: [CTest(deleteOutputFiles: true, failIfNotNew: true, pattern: 'ctest_output/*/*.xml', skipNoTestFiles: false, stopProcessingIfError: true)]
+            }
         }
-    } catch (err) {
-        echo "Failed to recover test results"
     }
-    stage('Clean up') {
+    post {
+        always {
+            echo 'Cleaning up!'
             sh 'docker rm -f testconda'
-            sh 'rm -rf test_conda_root'
+            sh 'rm -rf conda_root'
+        }
     }
-    }
+    // }
 }
