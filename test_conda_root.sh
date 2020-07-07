@@ -1,33 +1,29 @@
 #!/bin/bash
+# Build and run roottest against ROOT installed as a conda package.
+# The script assumes that `conda activate` sets an environment where ROOT is present.
+# Environment variable JOB_DIR is expected to be set to the desired working directory for this script (must not be empty).
+# The output of ctest will be contained in "${JOB_DIR}/ctest_output" after this script executes.
+
+#--- setup environment ---#
 set -euo pipefail
 IFS=$'\n\t'
 set -x
-
-JOB_DIR="/root/job"
-
-#--- setup environment ---#
-if [[ -z "${ROOTTEST_BRANCH}" ]]; then
-   echo "Please set the ROOTTEST_BRANCH env variable to the desired git branch for the roottest repository." >&2
-   exit 1
-fi
-mkdir -p "${JOB_DIR}"
+mkdir -p "${JOB_DIR:?}"
 pushd "${JOB_DIR}"
 
-#--- install ROOT from conda ---#
+#--- activate base conda environment ---#
 set +ux
 echo -n "activating conda..."
 conda activate
 echo "done"
-conda update --yes --all --quiet
-conda install --yes --quiet -c conda-forge root cmake make
+if [[ -z "$(which root)" ]]; then
+   echo "Could not find ROOT in this environment" >&2
+   exit 1
+fi
 set -ux
 
-#--- get roottest ---#
-ROOT_VERSION="v$(root-config --version | sed 's:[\./]:-:g')"
-if [[ -z "$ROOT_VERSION" || "$ROOT_VERSION" != "$ROOTTEST_BRANCH" ]]; then
-   echo "ROOT_VERSION $ROOT_VERSION for conda-forge ROOT package does not match specified ROOTTEST_BRANCH $ROOTTEST_BRANCH." >&2
-   exit 2
-fi
+#--- build roottest ---#
+ROOTTEST_BRANCH="v$(root-config --version | sed 's:[\./]:-:g')"
 git clone --quiet --branch ${ROOTTEST_BRANCH} --depth 1 https://github.com/root-project/roottest
 
 echo "***** ENVIRONMENT VARIABLES WHEN BUILDING ROOTTEST *****"
@@ -47,3 +43,5 @@ ctest -T test --no-compress-output || true  # ignore ctest exit code, we will pa
 
 popd
 popd
+
+mv "${JOB_DIR}/roottest_build/Testing" "${JOB_DIR}/ctest_output"

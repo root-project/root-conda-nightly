@@ -6,19 +6,21 @@ pipeline {
     stages {
         stage('Create docker container') {
             steps {
-                sh 'docker run -t --detach -e ROOTTEST_BRANCH=v6-22-00 --name testconda condaforge/linux-anvil-comp7'
+                sh 'docker run -t --detach --name testconda condaforge/linux-anvil-comp7'
             }
         }
         stage('Test conda release') {
             steps {
                 sh 'git clone --quiet --depth 1 https://gitlab.cern.ch/eguiraud/conda_root.git'
+                sh 'docker cp conda_root/install_conda_root.sh testconda:.'
                 sh 'docker cp conda_root/test_conda_root.sh testconda:.'
-                sh 'docker exec -t testconda bash -i test_conda_root.sh'
+                sh 'docker exec -t testconda bash -i install_conda_root.sh'
+                sh 'docker exec -e JOB_DIR=test_job -t testconda bash -i test_conda_root.sh'
             }
         }
         stage('Publish test results') {
             steps {
-                sh 'rm -rf ctest_output && docker cp testconda:/root/job/roottest_build/Testing ctest_output'
+                sh 'rm -rf ctest_output && docker cp testconda:test_job/ctest_output ctest_output'
                 xunit thresholds: [failed(failureNewThreshold: '0', failureThreshold: '8', unstableNewThreshold: '0', unstableThreshold: '0')], tools: [CTest(deleteOutputFiles: true, failIfNotNew: true, pattern: 'ctest_output/*/*.xml', skipNoTestFiles: false, stopProcessingIfError: true)]
             }
         }
