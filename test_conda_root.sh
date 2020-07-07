@@ -8,7 +8,7 @@
 set -euo pipefail
 IFS=$'\n\t'
 set -x
-JOB_DIR=$(realpath "${JOB_DIR}")
+JOB_DIR=$(readlink -m "${JOB_DIR}")
 mkdir -p "${JOB_DIR:?}"
 pushd "${JOB_DIR}"
 
