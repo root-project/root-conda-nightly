@@ -37,8 +37,9 @@ echo "********************************************************"
 BUILD_DIR="${JOB_DIR}/roottest_build"
 mkdir -p "${BUILD_DIR}"
 pushd "${BUILD_DIR}"
+# -DPYTHON_EXECUTABLE_Development_Main=$(which python) is due to bug https://sft.its.cern.ch/jira/browse/ROOT-10905
 # no need for -Ddataframe=ON since v6.24, see https://github.com/root-project/roottest/pull/551
-cmake -Ddataframe=ON "${JOB_DIR}/roottest"
+cmake -DPYTHON_EXECUTABLE_Development_Main=$(which python) -Ddataframe=ON "${JOB_DIR}/roottest"
 cmake --build .
 
 #--- run tests ---#
