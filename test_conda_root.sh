@@ -20,8 +20,8 @@ if [[ -z "$(which root)" ]]; then
    echo "Could not find ROOT in this environment" >&2
    exit 1
 fi
-set -ux
 conda install --yes --quiet -c conda-forge cmake make
+set -ux
 
 #--- build roottest ---#
 ROOTTEST_BRANCH="v$(root-config --version | sed 's:[\./]:-:g')"
