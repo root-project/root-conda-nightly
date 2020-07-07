@@ -16,8 +16,7 @@ pushd clangdev-feedstock
 ./build-locally.py linux_clang_variantroot_20200518
 popd
 
-# Sudo required as build_artifacts contains files which are owned by ROOT
-sudo mv clangdev-feedstock/build_artifacts root-feedstock/build_artifacts
+mv clangdev-feedstock/build_artifacts root-feedstock/build_artifacts
 
 pushd root-feedstock
 ./build-locally.py linux_python3.8.____cpython
