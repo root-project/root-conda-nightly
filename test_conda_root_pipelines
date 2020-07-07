@@ -2,7 +2,7 @@ pipeline {
     agent {
         label 'lcg_docker_cc7'
     }
-    // timestamps { // for some reason timestamps do not work in declarative pipelines
+    options { timestamps() }
     stages {
         stage('Create docker container') {
             steps {
@@ -30,5 +30,4 @@ pipeline {
             sh 'rm -rf conda_root'
         }
     }
-    // }
 }
