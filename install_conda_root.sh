@@ -5,15 +5,12 @@
 # If the ROOT_VERSION env variable is set it will be passed to the conda installation command.
 
 #--- setup environment ---#
-set -euo pipefail
+set -eo pipefail
 IFS=$'\n\t'
-set -x
 
-set +ux
 echo -n "activating conda..."
 conda activate
 echo "done"
-set -ux
 
 conda update --yes --all --quiet
 conda install --yes --quiet ${CUSTOM_CONDA_CHANNEL:+-c ${CUSTOM_CONDA_CHANNEL}} -c conda-forge root${ROOT_VERSION:+=${ROOT_VERSION}}
