@@ -3,14 +3,6 @@ set -euo pipefail
 IFS=$'\n\t'
 set -x
 
-set +ux
-echo -n "activating conda..."
-conda activate
-echo "done"
-conda update --yes --all --quiet
-conda install --yes --quiet conda-build git
-set -ux
-
 export ROOT_CONDA_BUILD_NUMBER="$(date +%Y%M%d)"
 export ROOT_CONDA_GIT_URL=https://github.com/root-project/root.git
 export ROOT_CONDA_GIT_REV=master
