@@ -13,4 +13,4 @@ conda activate
 echo "done"
 set -ux
 conda update --yes --all --quiet
-conda install --yes --quiet -c conda-forge root cmake make
+conda install --yes --quiet -c conda-forge root

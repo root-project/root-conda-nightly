@@ -21,6 +21,7 @@ if [[ -z "$(which root)" ]]; then
    exit 1
 fi
 set -ux
+conda install --yes --quiet -c conda-forge cmake make
 
 #--- build roottest ---#
 ROOTTEST_BRANCH="v$(root-config --version | sed 's:[\./]:-:g')"
