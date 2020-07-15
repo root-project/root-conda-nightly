@@ -8,7 +8,12 @@
 set -euo pipefail
 IFS=$'\n\t'
 set -x
-JOB_DIR=$(readlink -m "${JOB_DIR}") # make it an absolute path for simplicity
+
+${JOB_DIR:?}
+if [[ "$JOB_DIR" != $(readlink -m "$JOB_DIR" ]]; then
+   echo "Environment variable JOB_DIR must be set to an absolute path"
+   exit 1
+fi
 mkdir -p "${JOB_DIR}"
 pushd "${JOB_DIR}"
 
@@ -19,7 +24,7 @@ conda activate
 echo "done"
 if [[ -z "$(which root)" ]]; then
    echo "Could not find ROOT in this environment" >&2
-   exit 1
+   exit 2
 fi
 conda install --yes --quiet -c conda-forge cmake make
 set -ux
