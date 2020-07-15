@@ -9,7 +9,6 @@ set -euo pipefail
 IFS=$'\n\t'
 set -x
 
-${JOB_DIR:?}
 if [[ "$JOB_DIR" != $(readlink -m "$JOB_DIR" ]]; then
    echo "Environment variable JOB_DIR must be set to an absolute path"
    exit 1
