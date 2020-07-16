@@ -2,28 +2,41 @@ pipeline {
     agent {
         label 'lcg_docker_cc7'
     }
-
-    // timestamps { // broken with declarative pipelines??
-        stages {
-        stage('Create docker container') {
+    options { timestamps() }
+    stages {
+        stage('Build conda package for ROOT master') {
             steps {
-            sh 'docker run -t --detach --name conda-nightlies condaforge/linux-anvil-comp7'
+                sh 'git clone --quiet --depth 1 https://gitlab.cern.ch/eguiraud/conda_root.git'
+                sh 'bash conda_root/build_master.sh'
             }
         }
-        stage('Run ') {
+        stage('Install and test ROOT conda package in docker container') {
             steps {
-            sh 'git clone --quiet --depth 1 https://gitlab.cern.ch/eguiraud/conda_root.git'
-            sh 'docker cp conda_root/build_master.sh conda-nightlies:.'
-            sh 'docker exec -t conda-nightlies bash -i build_master.sh'
+                sh 'docker run -t -v $(readlink -e root-feedstock/build_artifacts):/root_build --detach --name conda-nightlies condaforge/linux-anvil-comp7'
+                sh 'docker cp conda_root/install_conda_root.sh conda-nightlies:.'
+                sh 'docker cp conda_root/test_conda_root.sh conda-nightlies:.'
+                sh 'docker exec -e CUSTOM_CONDA_CHANNEL=file:///root_build -t conda-nightlies bash -i install_conda_root.sh'
+                sh 'docker exec -e JOB_DIR=/test_job -t conda-nightlies bash -i test_conda_root.sh'
             }
         }
+        stage('Save ROOT nightlies as a conda package') {
+            steps {
+                sh 'OUTPUT=root_conda_$(date +%Y%m%d).tgz && rm -rf $OUTPUT && tar -czvf root_conda_$(date +%Y%m%d).tgz root-feedstock/build_artifacts'
+            }
         }
-    //}
-    post { 
-        always { 
+        stage('Publish test results') {
+            steps {
+                sh 'rm -rf ctest_output && docker cp testconda:/test_job/ctest_output ctest_output'
+                xunit thresholds: [failed(failureNewThreshold: '0', failureThreshold: '0', unstableNewThreshold: '0', unstableThreshold: '0')], tools: [CTest(deleteOutputFiles: true, failIfNotNew: true, pattern: 'ctest_output/*/*.xml', skipNoTestFiles: false, stopProcessingIfError: true)]
+            }
+        }
+    }
+    post {
+        always {
             echo 'Cleaning up!'
+            sh 'ls -A -1'
+            sh 'rm -rf conda_root clangdev-feedstock root-feedstock'
             sh 'docker rm -f conda-nightlies'
-            sh 'rm -rf conda_root'
         }
     }
 }
