@@ -19,9 +19,12 @@ pipeline {
                 sh 'docker exec -e JOB_DIR=/test_job -t conda-nightlies bash -i test_conda_root.sh'
             }
         }
-        stage('Save ROOT nightlies as a conda package') {
+        stage('Publish conda package as https://root.cern/download/conda-nightly/latest') {
             steps {
-                sh 'OUTPUT="root_conda_nightly_$(date +%Y%m%d).tgz" && rm -rf "$OUTPUT" && tar -czvf "$OUTPUT" root-feedstock/build_artifacts'
+                sh 'mv root-feedstock/build_artifacts root_conda_nightly_$(date +%Y%m%d)'
+                sh 'tar -czvf latest_root_conda_nightly.tgz root_conda_nightly_$(date +%Y%m%d)'
+                sshPublisher(publishers: [sshPublisherDesc(configName: 'ROOT', transfers: [sshTransfer(execCommand: 'rm -rf /home/www/root/download/conda-nightly/root_conda_nightly_$(date +%Y%m%d)')])])
+                sshPublisher(publishers: [sshPublisherDesc(configName: 'ROOT', transfers: [sshTransfer(execCommand: 'cd /home/www/root/download/conda-nightly && tar -xzvf latest_conda_nightly.tgz && rm -f latest_conda_nightly.tgz && rm -f latest && ln -s $(ls -td root_conda_nightly_* | head -n1) latest', remoteDirectory: 'conda-nightly', sourceFiles: 'latest_conda_nightly.tgz')])])
             }
         }
         stage('Publish test results') {
