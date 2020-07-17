@@ -21,7 +21,7 @@ pipeline {
         }
         stage('Save ROOT nightlies as a conda package') {
             steps {
-                sh 'OUTPUT=root_conda_$(date +%Y%m%d).tgz && rm -rf $OUTPUT && tar -czvf root_conda_$(date +%Y%m%d).tgz root-feedstock/build_artifacts'
+                sh 'OUTPUT="root_conda_nightly_$(date +%Y%m%d).tgz" && rm -rf "$OUTPUT" && tar -czvf "$OUTPUT" root-feedstock/build_artifacts'
             }
         }
         stage('Publish test results') {
