@@ -42,4 +42,9 @@ pipeline {
             sh 'docker rm -f conda-nightlies'
         }
     }
+    post {
+        failure {
+            step([$class: 'Mailer', recipients: 'christopher.burr@cern.ch,enrico.guiraud@cern.ch'])
+        }
+    }
 }
