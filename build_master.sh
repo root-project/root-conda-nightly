@@ -13,7 +13,7 @@ git clone https://github.com/chrisburr/clangdev-feedstock.git -b root-nightlies
 git clone https://github.com/chrisburr/root-feedstock.git -b root-nightlies
 
 pushd clangdev-feedstock
-./build-locally.py linux_clang_variantroot_20200518
+./build-locally.py linux_64_clang_variantroot_20200518
 popd
 
 mv clangdev-feedstock/build_artifacts root-feedstock/build_artifacts
