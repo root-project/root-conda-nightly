@@ -3,8 +3,8 @@ set -euo pipefail
 IFS=$'\n\t'
 set -x
 
-# ROOT tends to use 75% of cores for builds
-export CPU_COUNT=$(expr 3 \* $(nproc) / 4 )
+# ROOT tends to use 120% of cores for builds
+export CPU_COUNT=$(expr 12 \* $(nproc) / 10 )
 export ROOT_CONDA_BUILD_NUMBER="$(date +%Y%M%d)"
 export ROOT_CONDA_GIT_URL=https://github.com/root-project/root.git
 export ROOT_CONDA_GIT_REV=master
