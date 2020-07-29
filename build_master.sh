@@ -3,6 +3,8 @@ set -euo pipefail
 IFS=$'\n\t'
 set -x
 
+# ROOT tends to use 75% of cores for builds
+export CPU_COUNT=$(expr 3 \* $(nproc) / 4 )
 export ROOT_CONDA_BUILD_NUMBER="$(date +%Y%M%d)"
 export ROOT_CONDA_GIT_URL=https://github.com/root-project/root.git
 export ROOT_CONDA_GIT_REV=master
@@ -13,7 +15,7 @@ git clone https://github.com/chrisburr/clangdev-feedstock.git -b root-nightlies
 git clone https://github.com/chrisburr/root-feedstock.git -b root-nightlies
 
 pushd clangdev-feedstock
-./build-locally.py linux_clang_variantroot_20200518
+./build-locally.py linux_64_clang_variantroot_20200518
 popd
 
 mv clangdev-feedstock/build_artifacts root-feedstock/build_artifacts
