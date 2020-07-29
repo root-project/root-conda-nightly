@@ -3,6 +3,7 @@ set -euo pipefail
 IFS=$'\n\t'
 set -x
 
+export CPU_COUNT=$(nproc)
 export ROOT_CONDA_BUILD_NUMBER="$(date +%Y%M%d)"
 export ROOT_CONDA_GIT_URL=https://github.com/root-project/root.git
 export ROOT_CONDA_GIT_REV=master
