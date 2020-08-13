@@ -25,7 +25,7 @@ if [[ -z "$(which root)" ]]; then
    echo "Could not find ROOT in this environment" >&2
    exit 2
 fi
-conda install --yes --quiet -c conda-forge cmake make
+conda install --yes --quiet -c conda-forge cmake make git
 set -ux
 
 #--- build roottest ---#
