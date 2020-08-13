@@ -13,4 +13,4 @@ conda activate
 echo "done"
 
 conda update --yes --all --quiet
-conda install --yes --quiet ${CUSTOM_CONDA_CHANNEL:+-c ${CUSTOM_CONDA_CHANNEL}} -c conda-forge root${ROOT_VERSION:+=${ROOT_VERSION}}
+conda create --name test-root --yes --quiet ${CUSTOM_CONDA_CHANNEL:+-c ${CUSTOM_CONDA_CHANNEL}} -c conda-forge root-nightly${ROOT_VERSION:+=${ROOT_VERSION}}

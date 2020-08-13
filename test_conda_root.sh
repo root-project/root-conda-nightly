@@ -19,7 +19,7 @@ pushd "${JOB_DIR}"
 #--- activate base conda environment ---#
 set +ux
 echo -n "activating conda..."
-conda activate
+conda activate test-root
 echo "done"
 if [[ -z "$(which root)" ]]; then
    echo "Could not find ROOT in this environment" >&2
