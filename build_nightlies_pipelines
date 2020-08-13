@@ -38,7 +38,7 @@ pipeline {
         always {
             echo 'Cleaning up!'
             sh 'ls -A -1'
-            sh 'rm -rf conda_root clangdev-feedstock root-feedstock'
+            sh 'rm -rf conda_root clangdev-feedstock root-feedstock root_conda_nightly_*'
             sh 'docker rm -f conda-nightlies'
         }
         failure {
