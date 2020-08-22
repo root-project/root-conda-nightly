@@ -46,7 +46,7 @@ pushd "${BUILD_DIR}"
 # -DPYTHON_EXECUTABLE_Development_Main=$(which python) is due to bug https://sft.its.cern.ch/jira/browse/ROOT-10905
 # no need for -Ddataframe=ON since v6.24, see https://github.com/root-project/roottest/pull/551
 cmake -DPYTHON_EXECUTABLE_Development_Main=$(which python) -Ddataframe=ON "${JOB_DIR}/roottest"
-cmake --build .
+cmake --build . -j$(nproc)
 
 #--- run tests ---#
 ctest -T test --no-compress-output || true  # ignore ctest exit code, we will parse the logs
