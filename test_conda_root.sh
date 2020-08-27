@@ -16,10 +16,6 @@ fi
 mkdir -p "${JOB_DIR}"
 pushd "${JOB_DIR}"
 
-#--- install host system prerequisites ---#
-# see https://github.com/conda-forge/root-feedstock/blob/master/recipe/yum_requirements.txt
-/usr/bin/sudo -n yum install -y mesa-libGL mesa-dri-drivers libselinux libXdamage libXxf86vm redhat-lsb-core
-
 #--- activate base conda environment ---#
 set +ux
 echo -n "activating conda..."
