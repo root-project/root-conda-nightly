@@ -15,7 +15,7 @@ pipeline {
                 sh 'docker run -t -v $(readlink -e root-feedstock/build_artifacts):/root_build --detach --name conda-nightlies condaforge/linux-anvil-comp7'
                 sh 'docker cp conda_root/install_conda_root.sh conda-nightlies:.'
                 sh 'docker cp conda_root/test_conda_root.sh conda-nightlies:.'
-                sh 'docker exec -e CUSTOM_CONDA_CHANNEL=file:///root_build -t conda-nightlies bash -i install_conda_root.sh'
+                sh 'docker exec -e ROOT_PACKAGE="root-nightly" -e CUSTOM_CONDA_CHANNEL=file:///root_build -t conda-nightlies bash -i install_conda_root.sh'
                 sh 'docker exec -e ROOTTEST_BRANCH=master -e JOB_DIR=/test_job -t conda-nightlies bash -i test_conda_root.sh'
             }
         }

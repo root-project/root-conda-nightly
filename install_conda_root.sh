@@ -2,7 +2,7 @@
 # Install ROOT as a conda package
 # If the CUSTOM_CONDA_CHANNEL env variable is set, that channel will take priority over conda-forge
 # when looking for root and its dependencies.
-# If the ROOT_VERSION env variable is set it will be passed to the conda installation command.
+# If the ROOT_PACKAGE env variable is set e.g. to "root=6.22" or "root-nighly" it will be passed to the conda installation command.
 
 #--- setup environment ---#
 set -eo pipefail
@@ -13,4 +13,4 @@ conda activate
 echo "done"
 
 conda update --yes --all --quiet
-conda create --name test-root --yes --quiet ${CUSTOM_CONDA_CHANNEL:+-c ${CUSTOM_CONDA_CHANNEL}} -c conda-forge root-nightly${ROOT_VERSION:+=${ROOT_VERSION}}
+conda create --name test-root --yes --quiet ${CUSTOM_CONDA_CHANNEL:+-c ${CUSTOM_CONDA_CHANNEL}} -c conda-forge ${ROOT_PACKAGE:-root}
