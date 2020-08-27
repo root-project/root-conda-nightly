@@ -15,7 +15,7 @@ pipeline {
                 sh 'docker cp conda_root/install_conda_root.sh testconda:.'
                 sh 'docker cp conda_root/test_conda_root.sh testconda:.'
                 sh 'docker exec -t testconda bash -i install_conda_root.sh'
-                sh 'docker exec -e JOB_DIR=test_job -t testconda bash -i test_conda_root.sh'
+                sh 'docker exec -e JOB_DIR=/test_job -t testconda bash -i test_conda_root.sh'
             }
         }
         stage('Publish test results') {
