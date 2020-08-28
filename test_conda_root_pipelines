@@ -21,7 +21,7 @@ pipeline {
         stage('Publish test results') {
             steps {
                 sh 'rm -rf ctest_output && docker cp testconda:test_job/ctest_output ctest_output'
-                xunit thresholds: [failed(failureNewThreshold: '0', failureThreshold: '8', unstableNewThreshold: '0', unstableThreshold: '0')], tools: [CTest(deleteOutputFiles: true, failIfNotNew: true, pattern: 'ctest_output/*/*.xml', skipNoTestFiles: false, stopProcessingIfError: true)]
+                xunit thresholds: [failed(failureNewThreshold: '0', failureThreshold: '14', unstableNewThreshold: '0', unstableThreshold: '13')], tools: [CTest(deleteOutputFiles: true, failIfNotNew: true, pattern: 'ctest_output/*/*.xml', skipNoTestFiles: false, stopProcessingIfError: true)]
             }
         }
     }
