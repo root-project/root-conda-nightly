@@ -11,8 +11,8 @@ export ROOT_CONDA_GIT_REV=master
 export ROOT_CONDA_USE_CCACHE=0  # disabled at least for now
 export ROOT_CONDA_RUN_GTESTS=1
 
-git clone https://github.com/chrisburr/clangdev-feedstock.git -b root-nightlies
-git clone https://github.com/chrisburr/root-feedstock.git -b root-nightlies
+rm -rf clangdev-feedstock && git clone https://github.com/chrisburr/clangdev-feedstock.git -b root-nightlies
+rm -rf root-feedstock && git clone https://github.com/chrisburr/root-feedstock.git -b root-nightlies
 
 pushd clangdev-feedstock
 ./build-locally.py linux_64_clang_variantroot_20200518
