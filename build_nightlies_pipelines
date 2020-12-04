@@ -22,8 +22,8 @@ pipeline {
             steps {
                 sh 'rm -rf root_conda_nightly_$(date +%Y%m%d) && mv root-feedstock/build_artifacts root_conda_nightly_$(date +%Y%m%d)'
                 sh 'tar -czvf latest_conda_nightly.tgz root_conda_nightly_$(date +%Y%m%d)'
-                sshPublisher(publishers: [sshPublisherDesc(configName: 'ROOT', transfers: [sshTransfer(execCommand: 'rm -rf /home/www/root/download/conda-nightly/root_conda_nightly_$(date +%Y%m%d)')])])
-                sshPublisher(publishers: [sshPublisherDesc(configName: 'ROOT', transfers: [sshTransfer(execCommand: 'cd /home/www/root/download/conda-nightly && tar -xzvf latest_conda_nightly.tgz && rm -f latest_conda_nightly.tgz && ln -nfs $(ls -vd1 root_conda_nightly_* | tail -n1) latest', remoteDirectory: 'conda-nightly', sourceFiles: 'latest_conda_nightly.tgz')])])
+                sshPublisher(publishers: [sshPublisherDesc(configName: 'ROOT', transfers: [sshTransfer(execCommand: 'rm -rf /var/www/root/download/conda-nightly/root_conda_nightly_$(date +%Y%m%d)')])])
+                sshPublisher(publishers: [sshPublisherDesc(configName: 'ROOT', transfers: [sshTransfer(execCommand: 'cd /var/www/root/download/conda-nightly && tar -xzvf latest_conda_nightly.tgz && rm -f latest_conda_nightly.tgz && ln -nfs $(ls -vd1 root_conda_nightly_* | tail -n1) latest', remoteDirectory: 'conda-nightly', sourceFiles: 'latest_conda_nightly.tgz')])])
             }
         }
         stage('Publish test results') {
