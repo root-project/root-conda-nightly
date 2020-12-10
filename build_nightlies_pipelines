@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        label 'lcg_docker_cc7'
+        label 'conda_builds_docker'
     }
     options { timestamps() }
     stages {
