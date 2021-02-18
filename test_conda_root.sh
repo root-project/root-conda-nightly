@@ -16,6 +16,9 @@ fi
 mkdir -p "${JOB_DIR}"
 pushd "${JOB_DIR}"
 
+# pyspark requires java
+/usr/bin/sudo -n yum install -q -y java
+
 #--- activate base conda environment ---#
 set +ux
 echo -n "activating conda..."
