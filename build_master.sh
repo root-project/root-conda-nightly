@@ -11,15 +11,23 @@ export ROOT_CONDA_GIT_REV=master
 export ROOT_CONDA_USE_CCACHE=0  # disabled at least for now
 export ROOT_CONDA_RUN_GTESTS=1
 
-rm -rf clangdev-feedstock && git clone https://github.com/chrisburr/clangdev-feedstock.git -b root-nightlies
-rm -rf root-feedstock && git clone https://github.com/chrisburr/root-feedstock.git -b root-nightlies
+rm -rf clangdev-feedstock && git clone https://github.com/chrisburr/clangdev-feedstock.git -b root-nightlies-2
+rm -rf cling-feedstock && git clone https://github.com/chrisburr/cling-feedstock.git -b root-nightlies-2
+rm -rf root-feedstock && git clone https://github.com/chrisburr/root-feedstock.git -b root-nightlies-2
 
+# Build clang
 pushd clangdev-feedstock
-./build-locally.py linux_64_clang_variantroot_20200518
+./build-locally.py linux_64_variantcling_master
 popd
 
-mv clangdev-feedstock/build_artifacts root-feedstock/build_artifacts
+# Build cling
+mv clangdev-feedstock/build_artifacts cling-feedstock/build_artifacts
+pushd cling-feedstock
+./build-locally.py linux_64_
+popd
 
+# Build ROOT
+mv cling-feedstock/build_artifacts root-feedstock/build_artifacts
 pushd root-feedstock
-./build-locally.py linux_64_python3.8.____cpython
+./build-locally.py linux_64_
 popd
