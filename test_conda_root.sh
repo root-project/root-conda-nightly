@@ -28,7 +28,7 @@ if [[ -z "$(which root)" ]]; then
    echo "Could not find ROOT in this environment" >&2
    exit 2
 fi
-conda install --yes --quiet -c conda-forge cmake make git pytest pyspark
+conda install --yes --quiet -c conda-forge cmake make git pytest pyspark nlohmann_json
 set -ux
 
 #--- build roottest ---#
