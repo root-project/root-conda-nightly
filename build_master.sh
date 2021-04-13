@@ -35,5 +35,5 @@ popd
 # Build ROOT
 mv cling-feedstock/build_artifacts root-feedstock/build_artifacts
 pushd root-feedstock
-./build-locally.py linux_64_
+./build-locally.py linux_64_numpy1.17python3.8.____cpython
 popd
