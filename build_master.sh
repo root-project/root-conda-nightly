@@ -17,13 +17,13 @@ CONDA_FORGE_DOCKER_RUN_ARGS+=" -e ROOT_CONDA_USE_CCACHE=0"
 CONDA_FORGE_DOCKER_RUN_ARGS+=" -e ROOT_CONDA_RUN_GTESTS=1"
 export CONDA_FORGE_DOCKER_RUN_ARGS
 
-rm -rf clangdev-feedstock && git clone https://github.com/chrisburr/clangdev-feedstock.git -b root-nightlies-2
+rm -rf clangdev-feedstock && git clone https://github.com/chrisburr/clangdev-feedstock.git -b prepare-root-6.24.00-release
 rm -rf cling-feedstock && git clone https://github.com/chrisburr/cling-feedstock.git -b root-nightlies-2
 rm -rf root-feedstock && git clone https://github.com/chrisburr/root-feedstock.git -b root-nightlies-2
 
 # Build clang
 pushd clangdev-feedstock
-./build-locally.py linux_64_variantcling_master
+./build-locally.py linux_64_variantroot_62400
 popd
 
 # Build cling
