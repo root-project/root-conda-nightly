@@ -10,11 +10,11 @@ IFS=$'\n\t'
 
 echo -n "activating conda..."
 conda activate
+conda install --name base --yes mamba
 echo "done"
 
 #--- install host system prerequisites ---#
 # see https://github.com/conda-forge/root-feedstock/blob/master/recipe/yum_requirements.txt
 /usr/bin/sudo -n yum install -q -y mesa-libGL mesa-dri-drivers libselinux libXdamage libXxf86vm redhat-lsb-core
 
-conda update --yes --all --quiet
-conda create --name test-root --yes --quiet ${CUSTOM_CONDA_CHANNEL:+-c ${CUSTOM_CONDA_CHANNEL}} -c conda-forge ${ROOT_PACKAGE:-root}
+mamba create --name test-root --yes --quiet ${CUSTOM_CONDA_CHANNEL:+-c ${CUSTOM_CONDA_CHANNEL}} -c conda-forge ${ROOT_PACKAGE:-root}
