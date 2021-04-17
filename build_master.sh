@@ -18,6 +18,7 @@ CONDA_FORGE_DOCKER_RUN_ARGS+=" -e ROOT_CONDA_VERSION=${ROOT_CONDA_VERSION}"
 CONDA_FORGE_DOCKER_RUN_ARGS+=" -e ROOT_CONDA_BUILD_NUMBER=${ROOT_CONDA_BUILD_NUMBER}"
 # CONDA_FORGE_DOCKER_RUN_ARGS+=" -e ROOT_CONDA_GIT_URL=https://github.com/root-project/root.git"
 # CONDA_FORGE_DOCKER_RUN_ARGS+=" -e ROOT_CONDA_GIT_REV=master"
+# CONDA_FORGE_DOCKER_RUN_ARGS+=" -e ROOT_CONDA_BUILD_TYPE=Debug"
 export CONDA_FORGE_DOCKER_RUN_ARGS
 
 rm -rf clangdev-feedstock && git clone https://github.com/chrisburr/clangdev-feedstock.git -b prepare-root-6.24.00-release
