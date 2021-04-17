@@ -27,6 +27,7 @@ rm -rf root-feedstock && git clone https://github.com/chrisburr/root-feedstock.g
 
 # Build clang
 pushd clangdev-feedstock
+git show
 sed -i "s@build_number = 1@build_number = ${ROOT_CONDA_BUILD_NUMBER}@g" recipe/meta.yaml
 metadata_name=$(basename --suffix=.yaml $(echo .ci_support/linux_64_variantroot_*.yaml))
 echo "Clang build metadata name is ${metadata_name}"
@@ -42,6 +43,7 @@ popd
 # Build ROOT
 mv cling-feedstock/build_artifacts root-feedstock/build_artifacts
 pushd root-feedstock
+git show
 metadata_name=$(basename --suffix=.yaml $(echo .ci_support/linux_64_*python3.8*cpython.yaml))
 echo "Clang build metadata name is ${metadata_name}"
 ./build-locally.py "${metadata_name}"
