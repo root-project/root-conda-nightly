@@ -39,9 +39,10 @@ popd
 # pushd cling-feedstock
 # ./build-locally.py linux_64_
 # popd
+# mv cling-feedstock/build_artifacts root-feedstock/build_artifacts
+mv clangdev-feedstock/build_artifacts root-feedstock/build_artifacts
 
 # Build ROOT
-mv cling-feedstock/build_artifacts root-feedstock/build_artifacts
 pushd root-feedstock
 git show
 metadata_name=$(basename --suffix=.yaml $(echo .ci_support/linux_64_*python3.8*cpython.yaml))
