@@ -34,7 +34,7 @@ set -ux
 #--- build roottest ---#
 ROOTTEST_BRANCH="${ROOTTEST_BRANCH-v$(root-config --version | sed 's:[\./]:-:g')}"
 # git clone --quiet --branch ${ROOTTEST_BRANCH} --depth 1 https://github.com/root-project/roottest
-git clone --quiet --branch v6-24-00-patches --depth 1 https://github.com/root-project/roottest.git
+git clone --quiet --branch master --depth 1 https://github.com/root-project/roottest.git
 
 echo "***** ENVIRONMENT VARIABLES WHEN BUILDING ROOTTEST *****"
 declare -p
