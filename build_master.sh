@@ -40,8 +40,7 @@ popd
 # ./build-locally.py linux_64_
 # popd
 # mv cling-feedstock/build_artifacts root-feedstock/build_artifacts
-
-# mv clangdev-feedstock/build_artifacts root-feedstock/build_artifacts
+mv clangdev-feedstock/build_artifacts root-feedstock/build_artifacts
 
 # Build ROOT
 pushd root-feedstock
