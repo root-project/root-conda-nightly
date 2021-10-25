@@ -12,7 +12,7 @@ It executes the following operations:
 #### Example usage:
 
 ```bash
-$ docker run -t --detach -e ROOTTEST_BRANCH=v6-20-06 --name testconda condaforge/linux-anvil-comp7
+$ docker run -t --detach -e ROOTTEST_BRANCH=v6-20-06 --name testconda quay.io/condaforge/linux-anvil-cos7-cuda:10.2
 $ docker cp test_conda_root.sh testconda:.
 $ docker exec -it testconda bash -i test_conda_root.sh
 ```
