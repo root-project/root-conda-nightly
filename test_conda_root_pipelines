@@ -6,7 +6,7 @@ pipeline {
     stages {
         stage('Create docker container') {
             steps {
-                sh 'docker run -t --detach --name testconda condaforge/linux-anvil-comp7'
+                sh 'docker run -t --detach --name testconda quay.io/condaforge/linux-anvil-cos7-cuda:10.2'
             }
         }
         stage('Test conda release') {
