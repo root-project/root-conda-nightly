@@ -21,10 +21,10 @@ CONDA_FORGE_DOCKER_RUN_ARGS+=" -e ROOT_CONDA_GIT_REV=master"
 # CONDA_FORGE_DOCKER_RUN_ARGS+=" -e ROOT_CONDA_BUILD_TYPE=Debug"
 export CONDA_FORGE_DOCKER_RUN_ARGS
 
-rm -rf clangdev-feedstock && git clone https://github.com/chrisburr/llvmdev-feedstock.git -b root-nightlies
-rm -rf clangdev-feedstock && git clone https://github.com/chrisburr/clangdev-feedstock.git -b root-nightlies
-# rm -rf cling-feedstock && git clone https://github.com/chrisburr/cling-feedstock.git -b root-nightlies-2
-rm -rf root-feedstock && git clone https://github.com/chrisburr/root-feedstock.git -b root-nightlies
+rm -rf llvmdev-feedstock; git clone https://github.com/chrisburr/llvmdev-feedstock.git -b root-nightlies
+rm -rf clangdev-feedstock; git clone https://github.com/chrisburr/clangdev-feedstock.git -b root-nightlies
+# rm -rf cling-feedstock; git clone https://github.com/chrisburr/cling-feedstock.git -b root-nightlies-2
+rm -rf root-feedstock; git clone https://github.com/chrisburr/root-feedstock.git -b root-nightlies
 
 # Build llvm
 pushd llvmdev-feedstock
