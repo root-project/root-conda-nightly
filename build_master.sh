@@ -29,17 +29,16 @@ rm -rf root-feedstock; git clone https://github.com/chrisburr/root-feedstock.git
 # Build llvm
 pushd llvmdev-feedstock
 git show
-metadata_name=$(basename --suffix=.yaml $(echo .ci_support/linux_64_variantroot_*.yaml))
-echo "Clang build metadata name is ${metadata_name}"
-./build-locally.py "${metadata_name}"
+./build-locally.py "linux_64_variantcling_v0.9"
 popd
 mv llvmdev-feedstock/build_artifacts clangdev-feedstock/build_artifacts
 
 # Build clang
 pushd clangdev-feedstock
 git show
-echo "LLVM build metadata name is ${metadata_name}"
-./build-locally.py "linux_64_variantcling_v0.9"
+metadata_name=$(basename --suffix=.yaml $(echo .ci_support/linux_64_variantroot_*.yaml))
+echo "Clang build metadata name is ${metadata_name}"
+./build-locally.py "${metadata_name}"
 popd
 
 # # Build cling
