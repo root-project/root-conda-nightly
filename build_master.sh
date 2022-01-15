@@ -36,7 +36,7 @@ mv llvmdev-feedstock/build_artifacts clangdev-feedstock/build_artifacts
 # Build clang
 pushd clangdev-feedstock
 git show
-metadata_name=$(basename --suffix=.yaml $(echo .ci_support/linux_64_variantroot_*.yaml))
+metadata_name=$(basename --suffix=.yaml $(echo .ci_support/linux_64_*root_*.yaml))
 echo "Clang build metadata name is ${metadata_name}"
 ./build-locally.py "${metadata_name}"
 popd
