@@ -38,9 +38,8 @@ mv llvmdev-feedstock/build_artifacts clangdev-feedstock/build_artifacts
 # Build clang
 pushd clangdev-feedstock
 git show
-metadata_name=$(basename --suffix=.yaml $(echo .ci_support/linux_64_variantroot_*.yaml))
-echo "Clang build metadata name is ${metadata_name}"
-./build-locally.py "${metadata_name}"
+echo "LLVM build metadata name is ${metadata_name}"
+./build-locally.py "linux_64_variantcling_v0.9"
 popd
 
 # # Build cling
