@@ -21,14 +21,23 @@ CONDA_FORGE_DOCKER_RUN_ARGS+=" -e ROOT_CONDA_GIT_REV=master"
 # CONDA_FORGE_DOCKER_RUN_ARGS+=" -e ROOT_CONDA_BUILD_TYPE=Debug"
 export CONDA_FORGE_DOCKER_RUN_ARGS
 
+rm -rf clangdev-feedstock && git clone https://github.com/chrisburr/llvmdev-feedstock.git -b root-nightlies
 rm -rf clangdev-feedstock && git clone https://github.com/chrisburr/clangdev-feedstock.git -b root-nightlies
 # rm -rf cling-feedstock && git clone https://github.com/chrisburr/cling-feedstock.git -b root-nightlies-2
 rm -rf root-feedstock && git clone https://github.com/chrisburr/root-feedstock.git -b root-nightlies
 
+# Build llvm
+pushd llvmdev-feedstock
+git show
+metadata_name=$(basename --suffix=.yaml $(echo .ci_support/linux_64_variantroot_*.yaml))
+echo "Clang build metadata name is ${metadata_name}"
+./build-locally.py "${metadata_name}"
+popd
+mv llvmdev-feedstock/build_artifacts clangdev-feedstock/build_artifacts
+
 # Build clang
 pushd clangdev-feedstock
 git show
-sed -i "s@build_number = 1@build_number = ${ROOT_CONDA_BUILD_NUMBER}@g" recipe/meta.yaml
 metadata_name=$(basename --suffix=.yaml $(echo .ci_support/linux_64_variantroot_*.yaml))
 echo "Clang build metadata name is ${metadata_name}"
 ./build-locally.py "${metadata_name}"
