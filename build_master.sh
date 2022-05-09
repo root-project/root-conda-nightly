@@ -53,7 +53,7 @@ timeout 60s docker system prune -f || echo $?
 pushd llvmdev-feedstock
 git show
 ./build-locally.py "linux_64_variantcling_v0.9"
-docker system prune -f
+timeout 60s docker system prune -f || echo $?
 popd
 mv llvmdev-feedstock/build_artifacts clangdev-feedstock/build_artifacts
 
