@@ -8,7 +8,7 @@ export CPU_COUNT=$(expr 12 \* $(nproc) / 10 )
 # Tell the build-locally.py not to pass -it to docker
 export CI=1
 
-ROOT_CONDA_VERSION=6.25.2
+ROOT_CONDA_VERSION=6.27.0
 ROOT_CONDA_BUILD_NUMBER=$(date +%Y%M%d)
 
 CONDA_FORGE_DOCKER_RUN_ARGS="--rm"
