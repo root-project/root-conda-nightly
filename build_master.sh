@@ -45,6 +45,7 @@ git diff --color | cat
 popd
 
 df -h .
+docker system df
 docker system prune -f
 
 # Build llvm
