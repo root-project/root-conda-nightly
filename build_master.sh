@@ -44,10 +44,14 @@ mv recipe/meta.yaml.new recipe/meta.yaml
 git diff --color | cat
 popd
 
+df -h .
+docker system prune -f
+
 # Build llvm
 pushd llvmdev-feedstock
 git show
 ./build-locally.py "linux_64_variantcling_v0.9"
+docker system prune -f
 popd
 mv llvmdev-feedstock/build_artifacts clangdev-feedstock/build_artifacts
 
@@ -57,6 +61,7 @@ git show
 metadata_name=$(basename --suffix=.yaml $(echo .ci_support/linux_64_*root_*.yaml))
 echo "Clang build metadata name is ${metadata_name}"
 ./build-locally.py "${metadata_name}"
+docker system prune -f
 popd
 
 # # Build cling
@@ -73,4 +78,5 @@ git show
 metadata_name=$(basename --suffix=.yaml $(echo .ci_support/linux_64_*python3.9*cpython.yaml))
 echo "Clang build metadata name is ${metadata_name}"
 ./build-locally.py "${metadata_name}"
+docker system prune -f
 popd
