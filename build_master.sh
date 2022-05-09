@@ -45,8 +45,9 @@ git diff --color | cat
 popd
 
 df -h .
+df -h
 docker system df
-docker system prune -f
+timeout 60s docker system prune -f || echo $?
 
 # Build llvm
 pushd llvmdev-feedstock
@@ -62,7 +63,7 @@ git show
 metadata_name=$(basename --suffix=.yaml $(echo .ci_support/linux_64_*root_*.yaml))
 echo "Clang build metadata name is ${metadata_name}"
 ./build-locally.py "${metadata_name}"
-docker system prune -f
+timeout 60s docker system prune -f || echo $?
 popd
 
 # # Build cling
@@ -79,5 +80,5 @@ git show
 metadata_name=$(basename --suffix=.yaml $(echo .ci_support/linux_64_*python3.9*cpython.yaml))
 echo "Clang build metadata name is ${metadata_name}"
 ./build-locally.py "${metadata_name}"
-docker system prune -f
+timeout 60s docker system prune -f || echo $?
 popd
