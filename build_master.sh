@@ -52,7 +52,8 @@ timeout 60s docker system prune -f || echo $?
 # Build llvm
 pushd llvmdev-feedstock
 git show
-./build-locally.py "linux_64_variantcling_v0.9"
+metadata_name=$(basename --suffix=.yaml $(echo .ci_support/linux_64_*cling_master.yaml))
+./build-locally.py "${metadata_name}"
 timeout 60s docker system prune -f || echo $?
 popd
 mv llvmdev-feedstock/build_artifacts clangdev-feedstock/build_artifacts
