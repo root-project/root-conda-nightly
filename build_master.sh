@@ -18,7 +18,7 @@ CONDA_FORGE_DOCKER_RUN_ARGS+=" -e ROOT_CONDA_VERSION=${ROOT_CONDA_VERSION}"
 CONDA_FORGE_DOCKER_RUN_ARGS+=" -e ROOT_CONDA_BUILD_NUMBER=${ROOT_CONDA_BUILD_NUMBER}"
 CONDA_FORGE_DOCKER_RUN_ARGS+=" -e ROOT_CONDA_GIT_URL=https://github.com/root-project/root.git"
 CONDA_FORGE_DOCKER_RUN_ARGS+=" -e ROOT_CONDA_GIT_REV=master"
-CONDA_FORGE_DOCKER_RUN_ARGS+=" -e ROOT_CONDA_BUILD_TYPE=Debug -e EXTRA_CB_OPTIONS='--compression-tuple .tar.zst zstd zstd:compression-level=3'"
+CONDA_FORGE_DOCKER_RUN_ARGS+=" -e ROOT_CONDA_BUILD_TYPE=Debug"
 export CONDA_FORGE_DOCKER_RUN_ARGS
 
 rm -rf llvmdev-feedstock; git clone https://github.com/chrisburr/llvmdev-feedstock.git -b root-nightlies
