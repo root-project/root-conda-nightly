@@ -6,7 +6,7 @@ pipeline {
     stages {
         stage('Build conda package for ROOT master') {
             steps {
-                sh 'bash build_master.sh'
+                sh './build_master.sh --version=6.27.0 --build-number="$(date +%Y%M%d)" --test'
             }
         }
         stage('Install and test ROOT conda package in docker container') {
@@ -37,7 +37,7 @@ pipeline {
         always {
             echo 'Cleaning up!'
             sh 'ls -A -1'
-            sh 'rm -rf conda_root clangdev-feedstock root-feedstock root_conda_nightly_*'
+            sh 'rm -rf conda_root llvmdev-feedstock clangdev-feedstock root-feedstock root_conda_nightly_*'
             sh 'docker rm -f conda-nightlies'
         }
         failure {
