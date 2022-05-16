@@ -19,6 +19,7 @@ Build the root conda-packages
 --build-type=...    CMake build type to use for llvm/clang/root (default: ${ROOT_CONDA_BUILD_TYPE})
 -j=N                Number of cores to use (default: ${CPU_COUNT})
 --test              Run unit tests during the build process (failures are permitted)
+--clean             Delete directories used for previous builds
 "
 
 for i in "$@"; do
@@ -51,6 +52,11 @@ for i in "$@"; do
       ROOT_CONDA_RUN_GTESTS=1
       shift
       ;;
+    --clean)
+      rm -rf clangdev-feedstock/ llvmdev-feedstock/ root-feedstock/ mounted-for-tmp/ mounted-for-pkgs/
+      echo Directories cleaned
+      exit 0
+      ;;
     -h|--help)
       echo "${USAGE}"
       exit 0
@@ -66,6 +72,11 @@ for i in "$@"; do
   esac
 done
 
+if [ -d llvmdev-feedstock/ ] || [ -d clangdev-feedstock/ ] || [ -d root-feedstock/ ] || [ -d mounted-for-tmp/ ]; then
+    echo ERROR: Found local feedstock clones, try running with --clean
+    exit 1
+fi
+
 set -x
 CONDA_FORGE_DOCKER_RUN_ARGS="--rm"
 CONDA_FORGE_DOCKER_RUN_ARGS+=" -e ROOT_CONDA_IS_CI=1"
@@ -75,6 +86,12 @@ CONDA_FORGE_DOCKER_RUN_ARGS+=" -e ROOT_CONDA_BUILD_NUMBER=${ROOT_CONDA_BUILD_NUM
 CONDA_FORGE_DOCKER_RUN_ARGS+=" -e ROOT_CONDA_GIT_URL=${ROOT_CONDA_GIT_URL}"
 CONDA_FORGE_DOCKER_RUN_ARGS+=" -e ROOT_CONDA_GIT_REV=${ROOT_CONDA_GIT_REV}"
 CONDA_FORGE_DOCKER_RUN_ARGS+=" -e ROOT_CONDA_BUILD_TYPE=${ROOT_CONDA_BUILD_TYPE}"
+# Avoid issues with /tmp not being large enough (especially problematic for debug builds)
+mkdir -p "$PWD/mounted-for-tmp"
+CONDA_FORGE_DOCKER_RUN_ARGS+=" -v $PWD/mounted-for-tmp:/mounted-for-tmp"
+CONDA_FORGE_DOCKER_RUN_ARGS+=" -e TMPDIR=/mounted-for-tmp"
+mkdir -p "$PWD/mounted-for-pkgs"
+CONDA_FORGE_DOCKER_RUN_ARGS+=" -v $PWD/mounted-for-pkgs:/opt/conda/pkgs"
 
 export CONDA_FORGE_DOCKER_RUN_ARGS
 export CPU_COUNT
@@ -143,3 +160,5 @@ echo "Clang build metadata name is ${metadata_name}"
 ./build-locally.py "${metadata_name}"
 timeout 60s docker system prune -f || echo $?
 popd
+
+rm -rf "$PWD/mounted-for-tmp"
