@@ -6,7 +6,7 @@ pipeline {
     stages {
         stage('Build conda package for ROOT master') {
             steps {
-                sh './build_master.sh --version=6.27.0 --build-number="$(date +%Y%M%d)" --test'
+                sh './build_master.sh --clean; ./build_master.sh --version=6.27.0 --build-number="$(date +%Y%M%d)" --test'
             }
         }
         stage('Install and test ROOT conda package in docker container') {
