@@ -41,7 +41,7 @@ for i in "$@"; do
       shift
       ;;
     -n=*|--build-number=*)
-      ROOT_CONDA_BUILD_TYPE="${i#*=}"
+      ROOT_CONDA_BUILD_NUMBER="${i#*=}"
       shift
       ;;
     -j=*)
