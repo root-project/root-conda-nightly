@@ -8,10 +8,7 @@
 set -eo pipefail
 IFS=$'\n\t'
 
-echo -n "activating conda..."
 conda activate
-conda install --name base --yes mamba
-echo "done"
 
 #--- install host system prerequisites ---#
 # see https://github.com/conda-forge/root-feedstock/blob/master/recipe/yum_requirements.txt
