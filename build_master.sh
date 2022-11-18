@@ -10,6 +10,8 @@ ROOT_CONDA_BUILD_TYPE="Release"
 ROOT_CONDA_RUN_GTESTS=0
 CPU_COUNT=$(nproc)
 
+ping -c 10 conda.anaconda.org
+
 USAGE="usage: $0 [options]
 Build the root conda-packages
 --git-url=...       Git URL to get the git sources from (default: ${ROOT_CONDA_GIT_URL})
