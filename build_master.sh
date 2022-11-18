@@ -10,6 +10,7 @@ ROOT_CONDA_BUILD_TYPE="Release"
 ROOT_CONDA_RUN_GTESTS=0
 CPU_COUNT=$(nproc)
 
+docker run --rm quay.io/condaforge/linux-anvil-cos7-x86_64 bash -c 'sudo yum install -y bind-utils && dig conda.anaconda.org'
 docker run --rm quay.io/condaforge/linux-anvil-cos7-x86_64 ping -c 10 conda.anaconda.org
 
 USAGE="usage: $0 [options]
