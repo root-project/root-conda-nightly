@@ -10,7 +10,7 @@ ROOT_CONDA_BUILD_TYPE="Release"
 ROOT_CONDA_RUN_GTESTS=0
 CPU_COUNT=$(nproc)
 
-docker run --rm quay.io/condaforge/linux-anvil-cos7-x86_64@sha256:673aa8083428c00b71e2d20133361c569f371bb8a2c0973c64ea4ecb35e52e0a ping -c 10 conda.anaconda.org
+docker run --rm quay.io/condaforge/linux-anvil-cos7-x86_64 ping -c 10 conda.anaconda.org
 
 USAGE="usage: $0 [options]
 Build the root conda-packages
