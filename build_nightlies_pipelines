@@ -11,7 +11,7 @@ pipeline {
         }
         stage('Install and test ROOT conda package in docker container') {
             steps {
-                sh 'docker run --pull always -t -v $(readlink -e root-feedstock/build_artifacts):/root_build --detach --name conda-nightlies quay.io/condaforge/linux-anvil-cos7-cuda:10.2'
+                sh 'docker run --pull always -t --net=host -v $(readlink -e root-feedstock/build_artifacts):/root_build --detach --name conda-nightlies quay.io/condaforge/linux-anvil-cos7-cuda:10.2'
                 sh 'docker cp install_conda_root.sh conda-nightlies:.'
                 sh 'docker cp test_conda_root.sh conda-nightlies:.'
                 sh 'docker exec -e ROOT_PACKAGE="root-nightly" -e CUSTOM_CONDA_CHANNEL=file:///root_build -t conda-nightlies bash -i install_conda_root.sh'
