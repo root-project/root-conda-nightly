@@ -99,42 +99,42 @@ export CPU_COUNT
 # Tell the build-locally.py not to pass -it to docker
 export CI=1
 
-rm -rf llvmdev-feedstock; git clone https://github.com/chrisburr/llvmdev-feedstock.git -b root-nightlies
+# rm -rf llvmdev-feedstock; git clone https://github.com/chrisburr/llvmdev-feedstock.git -b root-nightlies
 rm -rf clangdev-feedstock; git clone https://github.com/chrisburr/clangdev-feedstock.git -b root-nightlies
 # rm -rf cling-feedstock; git clone https://github.com/chrisburr/cling-feedstock.git -b root-nightlies-2
 rm -rf root-feedstock; git clone https://github.com/chrisburr/root-feedstock.git -b root-nightlies
 
-# Update the clang patches from http://root.cern/git/clang.git
-pushd clangdev-feedstock
-test "$(grep --count '# Taken from cloning http://root.cern/git/clang.git and running' recipe/meta.yaml)" = 2
-head -n "$(grep -n '# Taken from cloning http://root.cern/git/clang.git and running' recipe/meta.yaml | cut -d ':' -f1 | head -n 1 | awk '{print $1+2}' )" recipe/meta.yaml > recipe/meta.yaml.new
-pushd recipe/patches/root/
-rm 0*.patch
-git clone http://root.cern/git/clang.git roots-clang
-git --git-dir="$PWD/roots-clang/.git" format-patch cc54f73e76332c635d97a53b5ec369901173be53~1..origin/ROOT-patches
-rm -rf roots-clang/
-# Apply a hack so conda build doesn't create a directory name "b" for the new file
-sed -i.bak 's@b/lib/Sema/HackForDefaultTemplateArg.h@lib/Sema/HackForDefaultTemplateArg.h@g' ./*New-file-for-4453ba7.patch; rm ./*New-file-for-4453ba7.patch.bak
-ls *.patch | sort | awk '{printf "%-63s\n", $0}' | sed -E 's@^(.+)$@      - patches/root/\1  # [variant and variant.startswith("root_")]@g' >> ../../meta.yaml.new
-popd
-tail -n "+$(grep -n '# Taken from cloning http://root.cern/git/clang.git and running' recipe/meta.yaml | cut -d ':' -f1 | tail -n 1 | awk '{print $1-1}' )" recipe/meta.yaml >> recipe/meta.yaml.new
-mv recipe/meta.yaml.new recipe/meta.yaml
-git diff --color | cat
-popd
+# # Update the clang patches from http://root.cern/git/clang.git
+# pushd clangdev-feedstock
+# test "$(grep --count '# Taken from cloning http://root.cern/git/clang.git and running' recipe/meta.yaml)" = 2
+# head -n "$(grep -n '# Taken from cloning http://root.cern/git/clang.git and running' recipe/meta.yaml | cut -d ':' -f1 | head -n 1 | awk '{print $1+2}' )" recipe/meta.yaml > recipe/meta.yaml.new
+# pushd recipe/patches/root/
+# rm 0*.patch
+# git clone http://root.cern/git/clang.git roots-clang
+# git --git-dir="$PWD/roots-clang/.git" format-patch cc54f73e76332c635d97a53b5ec369901173be53~1..origin/ROOT-patches
+# rm -rf roots-clang/
+# # Apply a hack so conda build doesn't create a directory name "b" for the new file
+# sed -i.bak 's@b/lib/Sema/HackForDefaultTemplateArg.h@lib/Sema/HackForDefaultTemplateArg.h@g' ./*New-file-for-4453ba7.patch; rm ./*New-file-for-4453ba7.patch.bak
+# ls *.patch | sort | awk '{printf "%-63s\n", $0}' | sed -E 's@^(.+)$@      - patches/root/\1  # [variant and variant.startswith("root_")]@g' >> ../../meta.yaml.new
+# popd
+# tail -n "+$(grep -n '# Taken from cloning http://root.cern/git/clang.git and running' recipe/meta.yaml | cut -d ':' -f1 | tail -n 1 | awk '{print $1-1}' )" recipe/meta.yaml >> recipe/meta.yaml.new
+# mv recipe/meta.yaml.new recipe/meta.yaml
+# git diff --color | cat
+# popd
 
 df -h .
 df -h
 docker system df
 timeout 60s docker system prune -f || echo $?
 
-# Build llvm
-pushd llvmdev-feedstock
-git show
-metadata_name=$(basename --suffix=.yaml "$(echo .ci_support/linux_64_*cling_master.yaml)")
-./build-locally.py "${metadata_name}"
-timeout 60s docker system prune -f || echo $?
-popd
-mv llvmdev-feedstock/build_artifacts clangdev-feedstock/build_artifacts
+# # Build llvm
+# pushd llvmdev-feedstock
+# git show
+# metadata_name=$(basename --suffix=.yaml "$(echo .ci_support/linux_64_*cling_master.yaml)")
+# ./build-locally.py "${metadata_name}"
+# timeout 60s docker system prune -f || echo $?
+# popd
+# mv llvmdev-feedstock/build_artifacts clangdev-feedstock/build_artifacts
 
 # Build clang
 pushd clangdev-feedstock
