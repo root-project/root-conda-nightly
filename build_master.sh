@@ -4,7 +4,7 @@ IFS=$'\n\t'
 
 ROOT_CONDA_GIT_URL="https://github.com/root-project/root.git"
 ROOT_CONDA_GIT_REV="master"
-ROOT_CONDA_VERSION=6.27.0.$(date -u +%Y.%m.%d.%H.%M)
+ROOT_CONDA_VERSION=6.31.01.$(date -u +%Y.%m.%d.%H.%M)
 ROOT_CONDA_BUILD_NUMBER=0
 ROOT_CONDA_BUILD_TYPE="Release"
 ROOT_CONDA_RUN_GTESTS=0
@@ -99,42 +99,13 @@ export CPU_COUNT
 # Tell the build-locally.py not to pass -it to docker
 export CI=1
 
-# rm -rf llvmdev-feedstock; git clone https://github.com/chrisburr/llvmdev-feedstock.git -b root-nightlies
-rm -rf clangdev-feedstock; git clone https://github.com/chrisburr/clangdev-feedstock.git -b root-nightlies
-# rm -rf cling-feedstock; git clone https://github.com/chrisburr/cling-feedstock.git -b root-nightlies-2
-rm -rf root-feedstock; git clone https://github.com/chrisburr/root-feedstock.git -b root-nightlies
-
-# # Update the clang patches from http://root.cern/git/clang.git
-# pushd clangdev-feedstock
-# test "$(grep --count '# Taken from cloning http://root.cern/git/clang.git and running' recipe/meta.yaml)" = 2
-# head -n "$(grep -n '# Taken from cloning http://root.cern/git/clang.git and running' recipe/meta.yaml | cut -d ':' -f1 | head -n 1 | awk '{print $1+2}' )" recipe/meta.yaml > recipe/meta.yaml.new
-# pushd recipe/patches/root/
-# rm 0*.patch
-# git clone http://root.cern/git/clang.git roots-clang
-# git --git-dir="$PWD/roots-clang/.git" format-patch cc54f73e76332c635d97a53b5ec369901173be53~1..origin/ROOT-patches
-# rm -rf roots-clang/
-# # Apply a hack so conda build doesn't create a directory name "b" for the new file
-# sed -i.bak 's@b/lib/Sema/HackForDefaultTemplateArg.h@lib/Sema/HackForDefaultTemplateArg.h@g' ./*New-file-for-4453ba7.patch; rm ./*New-file-for-4453ba7.patch.bak
-# ls *.patch | sort | awk '{printf "%-63s\n", $0}' | sed -E 's@^(.+)$@      - patches/root/\1  # [variant and variant.startswith("root_")]@g' >> ../../meta.yaml.new
-# popd
-# tail -n "+$(grep -n '# Taken from cloning http://root.cern/git/clang.git and running' recipe/meta.yaml | cut -d ':' -f1 | tail -n 1 | awk '{print $1-1}' )" recipe/meta.yaml >> recipe/meta.yaml.new
-# mv recipe/meta.yaml.new recipe/meta.yaml
-# git diff --color | cat
-# popd
+rm -rf clangdev-feedstock; git clone --single-branch --branch nightlies https://github.com/root-project/clangdev-feedstock.git
+rm -rf root-feedstock; git clone --single-branch --branch nightlies https://github.com/root-project/root-feedstock.git
 
 df -h .
 df -h
 docker system df
 timeout 60s docker system prune -f || echo $?
-
-# # Build llvm
-# pushd llvmdev-feedstock
-# git show
-# metadata_name=$(basename --suffix=.yaml "$(echo .ci_support/linux_64_*cling_master.yaml)")
-# ./build-locally.py "${metadata_name}"
-# timeout 60s docker system prune -f || echo $?
-# popd
-# mv llvmdev-feedstock/build_artifacts clangdev-feedstock/build_artifacts
 
 # Build clang
 pushd clangdev-feedstock
@@ -145,12 +116,6 @@ echo "Clang build metadata name is ${metadata_name}"
 timeout 60s docker system prune -f || echo $?
 popd
 
-# # Build cling
-# mv clangdev-feedstock/build_artifacts cling-feedstock/build_artifacts
-# pushd cling-feedstock
-# ./build-locally.py linux_64_
-# popd
-# mv cling-feedstock/build_artifacts root-feedstock/build_artifacts
 mv clangdev-feedstock/build_artifacts root-feedstock/build_artifacts
 
 # Build ROOT
