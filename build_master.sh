@@ -4,7 +4,7 @@ IFS=$'\n\t'
 
 ROOT_CONDA_GIT_URL="https://github.com/root-project/root.git"
 ROOT_CONDA_GIT_REV="master"
-ROOT_CONDA_VERSION=6.31.01.$(date -u +%Y.%m.%d.%H.%M)
+ROOT_CONDA_VERSION=6.33.01.$(date -u +%Y.%m.%d.%H.%M)
 ROOT_CONDA_BUILD_NUMBER=0
 ROOT_CONDA_BUILD_TYPE="Release"
 ROOT_CONDA_RUN_GTESTS=0
