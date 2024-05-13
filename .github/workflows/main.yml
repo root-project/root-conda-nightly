@@ -25,19 +25,6 @@ jobs:
       - linux
       - x64
 
-    container:
-      image: registry.cern.ch/root-ci/alma9:buildready
-      options: '--security-opt label=disable --rm' # ALSO UPDATE BELOW!
-      env:
-        PYTHONUNBUFFERED: true
-        OS_APPLICATION_CREDENTIAL_ID: '7f5b64a265244623a3a933308569bdba'
-        OS_APPLICATION_CREDENTIAL_SECRET: ${{ secrets.OS_APPLICATION_CREDENTIAL_SECRET }}
-        OS_AUTH_TYPE: 'v3applicationcredential'
-        OS_AUTH_URL: 'https://keystone.cern.ch/v3'
-        OS_IDENTITY_API_VERSION: 3
-        OS_INTERFACE: 'public'
-        OS_REGION_NAME: 'cern'
-
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
