@@ -5,12 +5,25 @@ name: root-conda-nightly
 # Controls when the workflow will run
 on: workflow_dispatch
 
+env:
+  PYTHONUNBUFFERED: true
+  OS_APPLICATION_CREDENTIAL_ID: '7f5b64a265244623a3a933308569bdba'
+  OS_APPLICATION_CREDENTIAL_SECRET: ${{ secrets.OS_APPLICATION_CREDENTIAL_SECRET }}
+  OS_AUTH_TYPE: 'v3applicationcredential'
+  OS_AUTH_URL: 'https://keystone.cern.ch/v3'
+  OS_IDENTITY_API_VERSION: 3
+  OS_INTERFACE: 'public'
+  OS_REGION_NAME: 'cern'
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
   build:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
+
+    runs-on:
+      - self-hosted
+      - linux
+      - x64
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -20,3 +33,15 @@ jobs:
       # Runs a single command using the runners shell
       - name: Build ROOT and run unittests
         run: ./build_master.sh --clean; ./build_master.sh --build-number="$(date +%Y%M%d)" --test
+
+      - name: Generate compressed artifact
+        run: |
+          mv root-feedstock/build_artifacts root_conda_nightly_$(date +%Y%m%d)
+          tar -czvf latest_conda_nightly.tgz root_conda_nightly_$(date +%Y%m%d)
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: ROOT conda nightly
+          path: latest_conda_nightly.tgz
+          if-no-files-found: error
