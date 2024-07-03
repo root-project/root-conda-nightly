@@ -3,7 +3,10 @@
 name: root-conda-nightly
 
 # Controls when the workflow will run
-on: workflow_dispatch
+on: 
+  workflow_dispatch:
+  schedule:
+    - cron: '0 1 * * *'
 
 env:
   PYTHONUNBUFFERED: true
@@ -34,14 +37,14 @@ jobs:
       - name: Build ROOT and run unittests
         run: ./build_master.sh --clean; ./build_master.sh --build-number="$(date +%Y%M%d)" --test
 
-      - name: Generate compressed artifact
-        run: |
-          mv root-feedstock/build_artifacts root_conda_nightly_$(date +%Y%m%d)
-          tar -czvf latest_conda_nightly.tgz root_conda_nightly_$(date +%Y%m%d)
+      # - name: Generate compressed artifact
+      #   run: |
+      #     mv root-feedstock/build_artifacts root_conda_nightly_$(date +%Y%m%d)
+      #     tar -czvf latest_conda_nightly.tgz root_conda_nightly_$(date +%Y%m%d)
 
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: ROOT conda nightly
-          path: latest_conda_nightly.tgz
-          if-no-files-found: error
+      # - name: Upload artifacts
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: ROOT conda nightly
+      #     path: latest_conda_nightly.tgz
+      #     if-no-files-found: error
